@@ -1,0 +1,13 @@
+{
+    "name" : "google-maps-for-polling-booth"
+  , "version" : "0.0.1"
+  , "description" : "app for the polling booths in victoria."
+  , "dependencies" : {
+        "express" : "3.4.8"
+      , "path" : "0.4.9"
+      , "jade" : "1.1.5"
+    }
+  , "engines": {
+        "node": "0.10.24"
+  }
+}
