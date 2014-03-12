@@ -10,7 +10,9 @@ var applicationRoot = __dirname,
     express = require('express'),
     jade = require('jade'),
     CLIENT_APP_DIR = 'dist',
-    PORT = process.env.PORT || 5000;
+    PORT = process.env.PORT || 5000,
+    fs = require('fs'),
+    csv = require('csv');
 
 
 
@@ -44,10 +46,40 @@ app.configure(function () {
 // ------- HTTP ROUTES DEFINITIONS --------------------
 app.get('/', function (req, res) {
     console.log('in GET / route handler');
-    render();
+
+    var gps_coords = [],
+        LAT_INDEX = 8,  //hard code index for now
+        LONG_INDEX = 9; //hard code index for now
+    
+
+    csv()
+      .from.path(__dirname + '/polling_booth_updated_ANDRE_EDIT_2.csv', {delimiter: ','})
+      .transform(function (row) {
+        //console.log('row is: ');
+        //console.log(row);
+        return row;
+      })
+      .on('record', function (row, index) {
+        //console.log(row);
+        //console.log('#'+ index + ' ' + JSON.stringify(row));
+        gps_coords.push({latitude: row[LAT_INDEX], longitude: row[LONG_INDEX]});
+
+      })
+      .on('end', function () {
+        console.log('END EVENT fired. finished parsing content');
+        //console.dir(gps_coords.slice(1));
+        console.log('number of elements: ' + gps_coords.slice(1).length); //305 booths
+
+        //start the render of content after we've got the gps coordinates
+        render();
+      })
+      .on('error', function (error) {
+        console.log(error.message);
+      });
+
 
     function render () {
-        jade.renderFile('./views/index.jade', cb);
+        jade.renderFile('./views/index.jade', {booths: gps_coords.slice(1)}, cb);
 
         function cb (err, html) {
             if (err) throw err;
