@@ -36,7 +36,7 @@ app.configure(function () {
     app.use(express.query());
     app.use(express.cookieParser('GSSdfsdgjjiuy^gG5F399X aa FD!2#RvSDFGHssdhA'));
     app.use(app.router);
-    //app.use(express.static(path.join(applicationRoot, CLIENT_APP_DIR)));
+    app.use(express.static(path.join(applicationRoot, CLIENT_APP_DIR)));
     app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 });
 
@@ -133,6 +133,20 @@ app.get('/', function (req, res) {
 
     parsePollingFile(function (gps_coords) {
       jade.renderFile('./views/index.jade', {booths: gps_coords}, fn);
+
+      function fn (err, html) {
+          if (err) throw err;
+          return res.send(html);
+      }
+    });
+});
+
+
+app.get('/polling-booth-locations', function (req, res) {
+    console.log('in GET /polling-booth-locations route handler');
+
+    parsePollingFile(function (gps_coords) {
+      jade.renderFile('./views/pollingBoothLocations.jade', {booths: gps_coords}, fn);
 
       function fn (err, html) {
           if (err) throw err;

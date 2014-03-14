@@ -1,61 +1,42 @@
 doctype html
 html(lang="en")
   head
-    title= pageTitle
-    meta(name='viewport' content='initial-scale=1.0, user-scalable=no')
-    style(type='text/css').
-      html {height: 100%}
-      body {height: 100%; margin: 0; padding: 0}
-      #map-canvas {height: 100%}
-
-    script(type='text/javascript' src='https://maps.googleapis.com/maps/api/js?libraries=visualization&key=AIzaSyBL9tXs7LGr5KVuRcVxcB048D2805Lo3xE&sensor=false').
-
-    script(type='text/javascript').
-
-      function initialize(the_booths) {
-        //console.log('hello from initialize');
-        //console.dir(the_booths);
-        var boothMapData = [];
-
-        //must only load map after window has loaded.
-        google.maps.event.addDomListener(window, 'load', setItUp);
-
-        //Data points defined as an array of LatLng objects
-        for (var i = 0; i < the_booths.length; i++) {
-          var weight_ = 1;
-          boothMapData.push({location: new google.maps.LatLng(the_booths[i].latitude, the_booths[i].longitude), weight: weight_});
-        }
-
-        //console.dir(boothMapData);
-
-        function setItUp() {
-          var melbourne = new google.maps.LatLng(-37.814251, 144.963165);
-          var ararat = new google.maps.LatLng(-37.2833300, 142.9333300);
-
-          var map = new google.maps.Map(document.getElementById('map-canvas'), {
-            center: ararat,
-            zoom: 7,
-            mapTypeId: google.maps.MapTypeId.SATELLITE
-          });
-    
-          var heatmap = new google.maps.visualization.HeatmapLayer({
-            //gradient: ['', '#B3CEF6', '#000'],
-            data: boothMapData 
-          });
-
-          heatmap.setMap(map);
-        }
-
-      }
-
-
-    !="<script type='text/javascript'>"
-    !="var booths = [];"
-    -for booth in booths
-      !="booths.push({'latitude':"  + booth.latitude  + ", " + "'longitude':" + booth.longitude + ", " + "'greens_perc_2010':" + booth.greens_perc_2010 + ", " + "'greens_perc_2006':" + booth.greens_perc_2006 + ", " + "'weight':" + booth.weight + "});"
-    !="initialize(booths);"
-    !="</script>"
+    title= Greenish
+    meta(http-equiv="X-UA-Compatible" content="IE-edge").
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css").
+    link(rel="stylesheet" href="jumbotron-narrow.css").
 
 
   body
-    div(id='map-canvas')
+    div(class="container")
+
+      div(class="header")
+        ul(class="nav nav-pills pull-right")
+          li(class="active")
+            a(href="/") HOME
+          li
+            a(href="/polling-booth-locations") POLLING BOOTHS
+          li
+            a(href="/greens/gain") GREENS GAIN
+          li
+            a(href="/greens/lose") GREENS LOSE
+  
+        h3(class="text-muted") nosebleed
+  
+  
+      div(class="jumbotron")
+        h1 nosebleed
+        p(class="lead")
+          |a high altitude view of the western region.
+  
+  
+      div(class="row marketing")
+        div(class="col-lg-12")
+          h4 Aim
+          p
+            |Using results from the 2006 and 2010 Victorian upper house elections,
+            |visualize key parameters obtained from analysing polling booth data.
+            |Find the highest yielding regions for Greens votes.
+            |Find areas which are not performing and also areas which may be better off
+            |neglected. All in the name of improving efficiency. 
