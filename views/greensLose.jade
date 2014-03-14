@@ -22,8 +22,14 @@ html(lang="en")
 
         //Data points defined as an array of LatLng objects
         for (var i = 0; i < the_booths.length; i++) {
-          var weight_ = 1;
-          boothMapData.push({location: new google.maps.LatLng(the_booths[i].latitude, the_booths[i].longitude), weight: weight_});
+          var weight_;
+          if ( the_booths[i].weight  <= 0) {
+            weight_ = -1 * the_booths[i].weight;
+            boothMapData.push({location: new google.maps.LatLng(the_booths[i].latitude, the_booths[i].longitude), weight: weight_});
+   
+          } else {
+            //do not create point for gaining greens polling booths
+          }
         }
 
         //console.dir(boothMapData);
